@@ -1,11 +1,9 @@
 package BankApplicationTask.BankApplicationTask.Repository
 
-import BankApplicationTask.BankApplicationTask.Entity.Users
+import BankApplicationTask.BankApplicationTask.Entity.Accounts
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface BankApplicationRepository : JpaRepository<Users,String>{
-
-
+interface AccountsRepository : JpaRepository<Accounts,String> {
 }

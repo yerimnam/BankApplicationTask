@@ -32,6 +32,8 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	implementation ("io.github.microutils:kotlin-logging-jvm:3.0.5")
+	// https://mvnrepository.com/artifact/org.json/json
+	implementation("org.json:json:20220924")
 
 
 }
