@@ -12,10 +12,10 @@ import jakarta.persistence.Table
  class Users(
 
     @Id
-    var userId : String,
+    var userId : String?,
 
     @Column
-    var password : String
+    var password : String?
 
 
 

@@ -14,9 +14,9 @@ class UsersService(private val usersRepository: UsersRepository ) {
 
     //사용자 생성
     @Transactional
-    fun createUsers(userId: String, password: String): Users {
-        logger.debug("createUsers - userId $userId,password : $password")
-        var usersDto  = UsersDTO(userId,password)
-        return usersRepository.save(usersDto.toEntity()) // DB 저장결과 return
+    fun createUsers(userInfo :UsersDTO) : Users {
+        logger.debug("createUsers - usersDto : $userInfo")
+
+        return usersRepository.save(userInfo.toEntity()) // DB 저장결과 return
     }
 }

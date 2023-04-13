@@ -1,10 +1,11 @@
 package BankApplicationTask.BankApplicationTask.Controller
 
 
-import BankApplicationTask.BankApplicationTask.Entity.Accounts
+import BankApplicationTask.BankApplicationTask.DTO.UsersDTO
 import BankApplicationTask.BankApplicationTask.Entity.Users
 import BankApplicationTask.BankApplicationTask.Service.UsersService
 import mu.KotlinLogging
+import org.json.JSONObject
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
@@ -21,11 +22,9 @@ class UsersController(private val usersService : UsersService) {
 
         //사용자 생성 api
        @PostMapping("/{id}")
-        fun createUsers(@PathVariable("id") userId :String,@RequestBody password:String ) : ResponseEntity<Users>{
-                logger.debug ("createUsers - userId : $userId, password : $password") //로거
-
-                //사용자 생성을 위한 service메소드 호출
-                val iscreated  = usersService.createUsers(userId,password)
+        fun createUsers(@PathVariable("id") userId :String,@RequestBody userInfo:UsersDTO ) : ResponseEntity<Users>{
+                logger.debug ("createUsers - userInfo : ${userInfo.userId},  ${userInfo.password}") //로직
+                val iscreated  = usersService.createUsers(userInfo)
                 logger.debug ("iscreated : $iscreated")
 
                 //응답 처리
