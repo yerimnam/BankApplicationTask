@@ -22,12 +22,16 @@ class UsersController(private val usersService : UsersService) {
 
         //사용자 생성 api
        @PostMapping("/{id}")
-        fun createUsers(@PathVariable("id") userId :String,@RequestBody userInfo:UsersDTO ) : ResponseEntity<Users>{
-                logger.debug ("createUsers - userInfo : ${userInfo.userId},  ${userInfo.password}") //로직
+        fun createUsers(@PathVariable("id") userId :String,@RequestBody userInfo:UsersDTO ) : ResponseEntity<UsersDTO>{
+                logger.debug ("createUsers - userInfo : ${userInfo.userId},  ${userInfo.password}") //requestBody 확인을 위한 로그
+
+               //사용자 생성을 위한 service 메소드 호출
                 val iscreated  = usersService.createUsers(userInfo)
+
+                //사용자 생성 완료 확인을 위한 로그
                 logger.debug ("iscreated : $iscreated")
 
-                //응답 처리
+                //Response 처리
                 if( iscreated != null ){ // 사용자 정보가 생성이 됐다면 Reponse: OK , body : 없음
                          return ResponseEntity(HttpStatus.OK)
                 }else {//생성이 되지 않았다면 Reponse :badrequest

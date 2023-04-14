@@ -1,8 +1,7 @@
 package BankApplicationTask.BankApplicationTask.Controller
 
 
-import BankApplicationTask.BankApplicationTask.Entity.Accounts
-import BankApplicationTask.BankApplicationTask.Entity.Users
+import BankApplicationTask.BankApplicationTask.DTO.AccountsDTO
 import BankApplicationTask.BankApplicationTask.Service.AccountsService
 import mu.KotlinLogging
 import org.springframework.http.HttpStatus
@@ -16,14 +15,16 @@ class AccountsController(private val accountsService : AccountsService) {
 
     //계좌 생성 API
     @PostMapping("/{id}/accounts/{accountId}")
-    fun createAccount(@PathVariable("id")userId: Users,@PathVariable("accountId") account:String,@RequestBody accountPassword: String) : ResponseEntity<Accounts> {
-        logger.debug("계좌생성- userId : $userId,account : $account, accountPassword : $accountPassword")
-        //전달받은 파라미터들을 DTO담기
-//        val accountsInfo = AccountsDTO(userId,account,accountPassword)Í
+    fun createAccount(@PathVariable("id") userId : String,@PathVariable("accountId") account:String,@RequestBody accountInfo: AccountsDTO) : ResponseEntity<AccountsDTO> {
+        //requestBody 확인을 위한 로그
+        logger.debug("계좌생성- userId : ${accountInfo.userId}, 계좌번호 : ${accountInfo.account} , 계좌번호 : ${accountInfo.accountPassword}")
 
         //계좌생성을 위한 service메소드 호출
-        val createAccount = accountsService.createAccounts(userId,account,accountPassword)
+        val createAccount = accountsService.createAccounts(accountInfo)
+        //계좌생성 완료 확인을 위한 로그
+        logger.debug { "$createAccount" }
 
+        //Reponse 처리
         if( createAccount != null){
             return ResponseEntity(HttpStatus.OK) //계좌 생성 성공 시 200 상태코드 반환
         }else {

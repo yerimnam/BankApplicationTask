@@ -1,11 +1,9 @@
 package BankApplicationTask.BankApplicationTask.Service
 
 
+import BankApplicationTask.BankApplicationTask.DTO.AccountsDTO
 import BankApplicationTask.BankApplicationTask.Entity.Accounts
-import BankApplicationTask.BankApplicationTask.Entity.Users
 import BankApplicationTask.BankApplicationTask.Repository.AccountsRepository
-import com.fasterxml.jackson.databind.util.JSONPObject
-import jakarta.persistence.Id
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -16,10 +14,10 @@ class AccountsService(private val accoutsRepository : AccountsRepository) {
 
     //계좌생성
     @Transactional
-    fun createAccounts(userId: Users,account:String,accountPassword:String): Accounts {
-        logger.debug ("createAccounts - userId: $userId,account: $account,accountPassword : $accountPassword")
+    fun createAccounts(accountInfo: AccountsDTO): Accounts {
+        logger.debug("accountService - accountInfo : $accountInfo")
 
-        return accoutsRepository.save(Accounts(userId,account,accountPassword)) // DB에 생성된 계좌정보 insert
+        return accoutsRepository.save(accountInfo.toEntity()) // DB에 생성된 계좌정보 insert
 
     }
 }
