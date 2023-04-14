@@ -8,12 +8,13 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class AccountsDTO(
 
     val account: String,
+
     @JsonProperty("user_id")
     var userId :String,
+
     @JsonProperty("account_password")
     var accountPassword: String,
-    var amount : Long,
-    var balance : Long,
+
     ) {
 
 
@@ -24,8 +25,9 @@ data class AccountsDTO(
             account =account,
             userId = Users(userId,""),
             accountPassword = accountPassword,
-            amount = amount,
-            balance =balance
         )
     }
+
+
+
 }

@@ -21,8 +21,6 @@ import org.hibernate.annotations.NotFoundAction
     @Column
     var password : String
 
-
-
 ){
      constructor() :this("","")
  }

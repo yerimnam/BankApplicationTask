@@ -1,7 +1,7 @@
 package BankApplicationTask.BankApplicationTask.Entity
 
 
-import BankApplicationTask.BankApplicationTask.DTO.AccountsDTO
+import BankApplicationTask.BankApplicationTask.DTO.ResponseDTO
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
@@ -10,8 +10,6 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import org.hibernate.annotations.NotFound
 import org.hibernate.annotations.NotFoundAction
-import org.hibernate.annotations.OnDelete
-import org.hibernate.annotations.OnDeleteAction
 
 
 @Entity
@@ -38,15 +36,17 @@ class Accounts(
 ){
     //빈생성자
     constructor():this("", Users("",""),"",0,0)
-    constructor(account: String,userId: Users,accountPassword: String) :this(account, userId,accountPassword,0,0)
-    fun toDTO() : AccountsDTO{
-        return AccountsDTO(
-            account=account,
-            userId = "",
-            accountPassword = accountPassword,
-            amount = amount,
-            balance = balance
+    //AccountDTO를 위한 생성자
+    constructor(account : String,userId : Users,accountPassword: String) :this(account, userId,"", 0,0)
 
+    //DepositDTO를 위한 생성자
+    constructor(account: String,amount: Long) :this(account, Users("",""),"",amount,0)
+
+    fun toDTO() : ResponseDTO{
+        return ResponseDTO(
+            account =account,
+            userId = "",
+            balance = balance
         )
     }
 }

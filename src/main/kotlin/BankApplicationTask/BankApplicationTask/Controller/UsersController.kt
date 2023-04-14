@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-@RequestMapping("/users", produces =["application/json; charset=UTF-8"] )
+@RequestMapping(produces =["application/json; charset=UTF-8"] )
 class UsersController(private val usersService : UsersService) {
     private val logger =KotlinLogging.logger {  } //로그 라이브러리 사용
 
         //사용자 생성 api
-       @PostMapping("/{id}")
+       @PostMapping("users/{id}")
         fun createUsers(@PathVariable("id") userId :String,@RequestBody userInfo:UsersDTO ) : ResponseEntity<UsersDTO>{
                 logger.debug ("createUsers - userInfo : ${userInfo.userId},  ${userInfo.password}") //requestBody 확인을 위한 로그
 
