@@ -4,14 +4,7 @@ import BankApplicationTask.BankApplicationTask.Entity.Accounts
 
 data class DepositDTO(
 
-        var account : String,
-        var amount : Long
+        var account : String, //계좌번호
+        var amount : Long //입금금액
 
-){
-//    fun toEntity():Accounts {
-//        return Accounts(
-//            account = account,
-//            amount = amount
-//        )
-//    }
-}
+)

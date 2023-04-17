@@ -4,6 +4,7 @@ package BankApplicationTask.BankApplicationTask.Service
 import BankApplicationTask.BankApplicationTask.DTO.AccountsDTO
 import BankApplicationTask.BankApplicationTask.DTO.DepositDTO
 import BankApplicationTask.BankApplicationTask.DTO.ResponseDTO
+import BankApplicationTask.BankApplicationTask.DTO.WithdrawDTO
 import BankApplicationTask.BankApplicationTask.Entity.Accounts
 import BankApplicationTask.BankApplicationTask.Repository.AccountsRepository
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -25,6 +26,7 @@ class AccountsService(private val accoutsRepository : AccountsRepository, privat
 
     }
 
+    //입금
     @Transactional
     fun insertDeposit(depositInfo: DepositDTO): ResponseDTO {
         //확인을 위한 로그
@@ -36,12 +38,37 @@ class AccountsService(private val accoutsRepository : AccountsRepository, privat
         logger.info { mapper.writeValueAsString(currentBalance) }
 
         //입금 잔액 update (잔고가 있어도, 0원이어도 모두 update 됨)
-        val response = accoutsRepository.save(currentBalance.updateDeposit(depositInfo))
-        logger.info { mapper.writeValueAsString(response) }
+        val responseDeposit = accoutsRepository.save(currentBalance.updateBalance(depositInfo))
+        logger.info { mapper.writeValueAsString(responseDeposit) }
+
         //반환할 user_id,account,balance DTO에 담아서 반환
-        return response.toDTO()
+        return responseDeposit.toDTO()
 
 
+    }
+
+    //출금
+    @Transactional
+    fun withdraw(withdrawInfo: WithdrawDTO): ResponseDTO {
+        //확인을 위한 로그
+        logger.debug { "withdrawInfo : $withdrawInfo" }
+
+       //계좌번호로 계좌정보 조회
+        val currentBalance :Accounts = accoutsRepository.findByAccount(withdrawInfo.account)
+
+        if(currentBalance.balance - withdrawInfo.amount>=0L) { //1) 정상 출금 가능 : 기존 잔액 - 원하는 출금 금액>=0
+                //출금 처리
+            val responseWithdraw = accoutsRepository.save(currentBalance.updateWithdraw(withdrawInfo))
+            logger.info { mapper.writeValueAsString(responseWithdraw) }
+
+            return responseWithdraw.toDTO()
+        }else if (currentBalance.balance - withdrawInfo.amount<0L){//2) 기존 잔액 - 원하는 출금 금액 <0
+                // 잔액이 부족-> 현재 잔액 반환 , DB update x
+                return  currentBalance.toDTO()
+        }else{ //3)잔액 =0
+                // 잔액 부족 : 현재 잔액 반환,DB update x
+                return  currentBalance.toDTO()
+        }
     }
 
 }

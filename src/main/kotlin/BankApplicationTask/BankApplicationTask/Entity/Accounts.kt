@@ -3,6 +3,7 @@ package BankApplicationTask.BankApplicationTask.Entity
 
 import BankApplicationTask.BankApplicationTask.DTO.DepositDTO
 import BankApplicationTask.BankApplicationTask.DTO.ResponseDTO
+import BankApplicationTask.BankApplicationTask.DTO.WithdrawDTO
 import jakarta.persistence.*
 import org.hibernate.annotations.NotFound
 import org.hibernate.annotations.NotFoundAction
@@ -24,20 +25,17 @@ class Accounts(
     var accountPassword: String,
 
     @Column
-    var amount: Long,
-
-    @Column
     var balance: Long
 
 ){
     //빈생성자
-    constructor():this("", Users("",""),"",0,0)
+    constructor():this("", Users("",""),"",0)
 
     //AccountDTO를 위한 생성자
-    constructor(account : String,user : Users,accountPassword: String) :this(account, user,accountPassword, 0,0)
+    constructor(account : String,user : Users,accountPassword: String) :this(account, user,accountPassword, 0)
 
     //DepositDTO를 위한 생성자
-    constructor(account: String,amount: Long) :this(account, Users("",""),"",amount,0)
+    constructor(account: String,amount: Long) :this(account, Users("",""),"",0)
 
     fun toDTO() : ResponseDTO{
         return ResponseDTO(
@@ -48,8 +46,13 @@ class Accounts(
     }
 
     //입금 금액 update를 위한 function
-    fun updateDeposit(depositDTO: DepositDTO): Accounts {
+    fun updateBalance(depositDTO: DepositDTO): Accounts {
         balance += depositDTO.amount //현재 잔고 = 현재잔고 + 입금 금액
         return this
+    }
+
+    fun updateWithdraw(withdrawDTO: WithdrawDTO) :Accounts{
+        balance -= withdrawDTO.amount // 현재 잔고 = 현재잔고 - 출금 금액
+        return  this
     }
 }

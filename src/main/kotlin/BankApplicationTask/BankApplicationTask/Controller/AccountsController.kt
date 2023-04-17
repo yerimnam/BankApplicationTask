@@ -1,10 +1,7 @@
 package BankApplicationTask.BankApplicationTask.Controller
 
 
-import BankApplicationTask.BankApplicationTask.DTO.AccountsDTO
-import BankApplicationTask.BankApplicationTask.DTO.DepositDTO
-import BankApplicationTask.BankApplicationTask.DTO.ResponseDTO
-import BankApplicationTask.BankApplicationTask.DTO.UsersDTO
+import BankApplicationTask.BankApplicationTask.DTO.*
 import BankApplicationTask.BankApplicationTask.Service.AccountsService
 import mu.KotlinLogging
 import org.springframework.http.HttpStatus
@@ -48,14 +45,34 @@ class AccountsController(private val accountsService : AccountsService) {
         val result = accountsService.insertDeposit(depositInfo)
 
         //결과 반환
-        //입금 완료 시 200 Ok, user_id,account,balance 가져오기
-        if(result != null){
+        if(result != null){ //입금 완료 시 200 Ok, user_id,account,balance 가져오기
             return ResponseEntity
                 .ok()
                 .body(result)
         }else {
             return ResponseEntity(HttpStatus.BAD_REQUEST)
         }
+    }
 
+
+    //출금 API
+    @PostMapping("/users/{id}/accounts/{accountId}/withdraw")
+    fun withdraw(
+        @PathVariable("id") userId : String,
+        @PathVariable("accountId")  account : String,
+        @RequestBody withdrawInfo : WithdrawDTO
+    ): ResponseEntity<ResponseDTO>{
+
+        //출금을 위한 서비스 호출
+        val result = accountsService.withdraw(withdrawInfo)
+
+        //결과 반환
+        if(result != null){  //입금 완료 시 200 OK, user_id,account,balance 반환
+            return  ResponseEntity
+                .ok()
+                .body(result)
+        }else {
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+        }
     }
 }
