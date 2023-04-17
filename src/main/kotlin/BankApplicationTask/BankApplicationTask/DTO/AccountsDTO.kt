@@ -3,6 +3,7 @@ package BankApplicationTask.BankApplicationTask.DTO
 import BankApplicationTask.BankApplicationTask.Entity.Accounts
 import BankApplicationTask.BankApplicationTask.Entity.Users
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.apache.catalina.User
 
 
 data class AccountsDTO(
@@ -23,8 +24,8 @@ data class AccountsDTO(
     fun toEntity():Accounts {
         return Accounts(
             account =account,
-            userId = Users(userId,""),
-            accountPassword = accountPassword,
+            user = Users(userId,""),
+            accountPassword =accountPassword
         )
     }
 

@@ -1,13 +1,9 @@
 package BankApplicationTask.BankApplicationTask.Entity
 
 
+import BankApplicationTask.BankApplicationTask.DTO.DepositDTO
 import BankApplicationTask.BankApplicationTask.DTO.ResponseDTO
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import org.hibernate.annotations.NotFound
 import org.hibernate.annotations.NotFoundAction
 
@@ -22,7 +18,7 @@ class Accounts(
     @ManyToOne
     @JoinColumn(name="user_id")
     @NotFound(action = NotFoundAction.IGNORE)
-    var userId: Users,
+    var user: Users,
 
     @Column
     var accountPassword: String,
@@ -36,8 +32,9 @@ class Accounts(
 ){
     //빈생성자
     constructor():this("", Users("",""),"",0,0)
+
     //AccountDTO를 위한 생성자
-    constructor(account : String,userId : Users,accountPassword: String) :this(account, userId,"", 0,0)
+    constructor(account : String,user : Users,accountPassword: String) :this(account, user,accountPassword, 0,0)
 
     //DepositDTO를 위한 생성자
     constructor(account: String,amount: Long) :this(account, Users("",""),"",amount,0)
@@ -45,8 +42,14 @@ class Accounts(
     fun toDTO() : ResponseDTO{
         return ResponseDTO(
             account =account,
-            userId = "",
+            userId = user.userId, //user객체의 userID 사용
             balance = balance
         )
+    }
+
+    //입금 금액 update를 위한 function
+    fun updateDeposit(depositDTO: DepositDTO): Accounts {
+        balance += depositDTO.amount //현재 잔고 = 현재잔고 + 입금 금액
+        return this
     }
 }

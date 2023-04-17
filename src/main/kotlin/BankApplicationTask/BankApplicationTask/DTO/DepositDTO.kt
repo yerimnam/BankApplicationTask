@@ -8,10 +8,10 @@ data class DepositDTO(
         var amount : Long
 
 ){
-    fun toEntity():Accounts {
-        return Accounts(
-            account = account,
-            amount = amount
-        )
-    }
+//    fun toEntity():Accounts {
+//        return Accounts(
+//            account = account,
+//            amount = amount
+//        )
+//    }
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface AccountsRepository : JpaRepository<Accounts,String> {
 
-    abstract fun findByAccount(toEntity: Accounts): Accounts
+    fun findByAccount(account: String): Accounts
 
 
 }
