@@ -2,6 +2,7 @@ package BankApplicationTask.BankApplicationTask.Controller
 
 
 import BankApplicationTask.BankApplicationTask.DTO.UsersDTO
+import BankApplicationTask.BankApplicationTask.DTO.UsersResponseDTO
 import BankApplicationTask.BankApplicationTask.Entity.Users
 import BankApplicationTask.BankApplicationTask.Service.UsersService
 import mu.KotlinLogging
@@ -22,7 +23,7 @@ class UsersController(private val usersService : UsersService) {
 
         //사용자 생성 api
        @PostMapping("users/{id}")
-        fun createUsers(@PathVariable("id") userId :String,@RequestBody userInfo:UsersDTO ) : ResponseEntity<UsersDTO>{
+        fun createUsers(@PathVariable("id") userId :String,@RequestBody userInfo:UsersDTO ) : ResponseEntity<UsersResponseDTO>{
                 logger.debug ("createUsers - userInfo : ${userInfo.userId},  ${userInfo.password}") //requestBody 확인을 위한 로그
 
                //사용자 생성을 위한 service 메소드 호출
@@ -32,7 +33,7 @@ class UsersController(private val usersService : UsersService) {
                 logger.debug ("iscreated : $iscreated")
 
                 //Response 처리
-                if( iscreated != null ){ // 사용자 정보가 생성이 됐다면 Reponse: OK , body : 없음
+                if(iscreated){ // 사용자 정보가 생성이 됐다면 Reponse: OK , body : 없음
                          return ResponseEntity(HttpStatus.OK)
                 }else {//생성이 되지 않았다면 Reponse :badrequest
                         return ResponseEntity(HttpStatus.BAD_REQUEST)
