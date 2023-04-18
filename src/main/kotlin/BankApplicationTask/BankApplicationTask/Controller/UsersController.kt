@@ -23,7 +23,7 @@ class UsersController(private val usersService : UsersService) {
 
         //사용자 생성 api
        @PostMapping("users/{id}")
-        fun createUsers(@PathVariable("id") userId :String,@RequestBody userInfo:UsersDTO ) : ResponseEntity<UsersResponseDTO>{
+        fun createUsers(@PathVariable("id") userId :String,@RequestBody userInfo:UsersDTO ) : ResponseEntity<String>{
                 logger.debug ("createUsers - userInfo : ${userInfo.userId},  ${userInfo.password}") //requestBody 확인을 위한 로그
 
                //사용자 생성을 위한 service 메소드 호출
@@ -35,8 +35,12 @@ class UsersController(private val usersService : UsersService) {
                 //Response 처리
                 if(iscreated){ // 사용자 정보가 생성이 됐다면 Reponse: OK , body : 없음
                          return ResponseEntity(HttpStatus.OK)
-                }else {//생성이 되지 않았다면 Reponse :badrequest
-                        return ResponseEntity(HttpStatus.BAD_REQUEST)
+                }else if(!iscreated) {//이미 가입되어 있는 경우
+                        return ResponseEntity
+                                .ok()
+                                .body("이미 가입된 사용자입니다.")
+                }else{//잘못된 요청인 경우
+                    return  ResponseEntity(HttpStatus.BAD_REQUEST)
                 }
         }
 
