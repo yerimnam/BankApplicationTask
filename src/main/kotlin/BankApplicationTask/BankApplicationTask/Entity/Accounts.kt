@@ -30,15 +30,6 @@ class Accounts(
     var balance: Long
 
 ){
-    constructor(userId:Users,account:String,accountPassword: String) :this(account,userId,accountPassword,0,0)
-//    fun toDTO() : AccountsDTO{
-//        return AccountsDTO(
-//            account=account,
-//            userId = userId,
-//            accountPassword = accountPassword,
-//            amount = amount,
-//            balance = balance
-//
-//        )
-//    }
+    //빈생성자
+    constructor() :this("",Users("",""),"",0,0)
 }
