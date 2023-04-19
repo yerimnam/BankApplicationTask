@@ -15,7 +15,10 @@ class AccountsController(private val accountsService : AccountsService) {
 
     //계좌 생성 API
     @PostMapping("/users/{id}/accounts/{accountId}")
-    fun createAccount(@PathVariable("id") userId : String,@PathVariable("accountId") account:String,@RequestBody accountInfo: AccountsDTO) : ResponseEntity<AccountsDTO> {
+    fun createAccount(
+        @PathVariable("id") userId : String,
+        @PathVariable("accountId") account:String,
+        @RequestBody accountInfo: AccountsDTO) : ResponseEntity<String> {
         //requestBody 확인을 위한 로그
         logger.debug("계좌생성- userId : ${accountInfo.userId}, 계좌번호 : ${accountInfo.account} , 계좌비밀번호 : ${accountInfo.accountPassword}")
 
@@ -25,9 +28,13 @@ class AccountsController(private val accountsService : AccountsService) {
         logger.debug { "$createAccount" }
 
         //Reponse 처리
-        if( createAccount != null){
+        if( createAccount){
             return ResponseEntity(HttpStatus.OK) //계좌 생성 성공 시 200 상태코드 반환
-        }else {
+        }else if(!createAccount){ //이미 생성된 계좌의 처리
+            return ResponseEntity
+                .ok()
+                .body("이미 생성된 계좌입니다.")
+        }else { // 그외의 처리
             return ResponseEntity(HttpStatus.BAD_REQUEST)
         }
     }
